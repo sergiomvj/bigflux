@@ -31,6 +31,7 @@ Um mini-app Premium não deve ser apenas um formulário que chama um LLM. Ele de
 Esta skill deve ser usada para criar, revisar ou implementar mini-apps Premium como:
 
 - Gerador de Vídeos Virais.
+- Gerador de Formula de Lançamento (vendas).
 - Gerador de Imagens Virais.
 - Gerador de Email Marketing.
 - Gestor de Redes Sociais.

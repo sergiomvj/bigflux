@@ -1,0 +1,193 @@
+workflow:
+  id: start-project-fbr
+  name: Start Project FBR
+  version: "1.0"
+  description: >-
+    Pipeline global FBR de 7 módulos para bootstrap e entrega de projeto assistido por subagentes AIOX.
+    Módulo 0 (Bootstrap AIOX, Deps, Modelagem de dados, e Release Review) ->
+    Processo autônomo de M1 a M6 (Entregáveis, Stories, QA Stories, Implementação, QA Implementação, e Revisão Final).
+  type: generic
+  project_types:
+    - fullstack
+    - web-app
+    - saas
+  
+  metadata:
+    elicit: true
+    confirmation_required: true
+
+  phases:
+    - phase_0: M0-Bootstrap-and-Review
+    - phase_1: M1-Entregaveis
+    - phase_2: M2-Stories-and-M3-QA
+    - phase_3: M4-Implementacao-and-M5-QA
+    - phase_4: M6-Revisao-Final
+
+  sequence:
+    # ==========================================
+    # PHASE 0: BOOTSTRAP & REVIEW (M0)
+    # ==========================================
+    - step: m0_aiox_bootstrap
+      id: m0-aiox
+      phase: 0
+      agent: general-purpose
+      action: "Garantir framework AIOX e subagentes aiox-*"
+      notes: >
+        Se a pasta .aiox-core/ não existir no diretório atual, restaura do seed global executando:
+        `bash /c/Users/OEM/.aiox-seed/restore.sh "$(pwd)"`
+        Confirma a existência de .aiox-core/ e dos agentes aiox-* (.claude/agents/aiox-{sm,pm,qa,dev,architect,data-engineer}.md).
+      outputs:
+        - status
+        - aioxPresent
+        - skillsPresent
+      next: m0_deps_setup
+
+    - step: m0_deps_setup
+      id: m0-deps
+      phase: 0
+      agent: architect
+      action: "Identificar e instalar dependências do PRD"
+      requires: m0-aiox
+      notes: >
+        Lê o PRD (seção de Dependências) e instala todas as dependências de runtime, produção, devDeps, CLI e ferramentas necessárias.
+        Garante que o package.json esteja atualizado e roda o pnpm install ou npm install.
+      outputs:
+        - installed
+        - dependencies
+      next: m0_data_modeling
+
+    - step: m0_data_modeling
+      id: m0-data
+      phase: 0
+      agent: data-engineer
+      action: "Criar migrations, esquemas, RLS e índices"
+      requires: m0-deps
+      notes: >
+        Modelagem de dados completa (migrations/schema, políticas RLS, índices) de acordo com as especificações do PRD.
+        Salva os arquivos de migração no local padrão do projeto.
+      outputs:
+        - status
+        - tables
+        - migrations
+      next: m0_release_review
+
+    - step: m0_release_review
+      id: m0-review
+      phase: 0
+      agent: architect
+      action: "Revisar bootstrap e decidir GO/NO-GO"
+      requires: m0-data
+      notes: >
+        Revisa se o AIOX está pronto, se as dependências estão corretas e se o banco foi modelado adequadamente.
+        Gera o relatório em docs/MODULE-ZERO-RELEASE.md e decide o veredito GO ou NO-GO.
+      outputs:
+        - verdict
+        - blockers
+      next: m1_deliverables
+
+    # ==========================================
+    # PHASE 1: ENTREGÁVEIS (M1)
+    # ==========================================
+    - step: m1_deliverables
+      id: m1-entregaveis
+      phase: 1
+      agent: pm
+      action: "Listar e validar entregáveis mínimos"
+      requires: m0-review
+      notes: >
+        Lê o PRD e lista todos os entregáveis mínimos (MVP/PRD alignment) agrupados por épico, salvando em docs/deliverables/MVP-DELIVERABLES.md.
+      outputs:
+        - deliverables
+        - file
+      next: m2_create_stories
+
+    # ==========================================
+    # PHASE 2: STORIES & QA REVIEW (M2 & M3)
+    # ==========================================
+    - step: m2_create_stories
+      id: m2-stories
+      phase: 2
+      agent: sm
+      action: "Scaffold de stories com critérios de aceite"
+      requires: m1-entregaveis
+      notes: >
+        Cria arquivos de story em docs/stories/{id}.story.md (Status=Draft, AC numerados/testáveis, checklists de tarefas e file-list vazios).
+        Não recria se já existirem (idempotente).
+      outputs:
+        - stories
+      next: m3_qa_stories_review
+
+    - step: m3_qa_stories_review
+      id: m3-qa-stories
+      phase: 2
+      agent: qa
+      action: "Auditar stories contra PRD e Entregáveis"
+      requires: m2-stories
+      notes: >
+        Audita cobertura, critérios de aceite rastreáveis e coerência das stories.
+        Escreve docs/stories/STORIES-QA-REVIEW.md. Veredito OK (cobertura >= 90%) ou NOT-OK (indica gaps a corrigir).
+        Se reprovar, reativa SM para correção e repete.
+      outputs:
+        - verdict
+        - gaps
+        - coveragePct
+      next: m4_implement_stories
+      on_failure: m2_create_stories
+
+    # ==========================================
+    # PHASE 3: IMPLEMENTAÇÃO & QA REVIEW (M4 & M5)
+    # ==========================================
+    - step: m4_implement_stories
+      id: m4-implementacao
+      phase: 3
+      agent: dev
+      action: "Implementar código das stories sequencialmente"
+      requires: m3-qa-stories
+      notes: >
+        Implementa a story lendo docs/stories/{id}.story.md. Siga os ACs, atualize checklists e rode lint/typecheck.
+        Ao terminar, marca como "Ready for Review" e atualiza a File List.
+      outputs:
+        - status
+        - filesTouched
+      next: m5_qa_implementation_review
+
+    - step: m5_qa_implementation_review
+      id: m5-qa-implementacao
+      phase: 3
+      agent: qa
+      action: "Validar conformidade da implementação com os ACs"
+      requires: m4-implementacao
+      notes: >
+        Valida a implementação da story com os critérios de aceite.
+        Roda testes, lint e typecheck. Atualiza a seção "QA Results" da story e escreve no docs/stories/BUILD-LOG.md.
+        Se reprovar (conformant=NO), devolve para Dev com instruções precisas.
+      outputs:
+        - conformant
+        - mustFix
+      next: m6_final_review
+      on_failure: m4_implement_stories
+
+    # ==========================================
+    # PHASE 4: REVISÃO FINAL (M6)
+    # ==========================================
+    - step: m6_final_review
+      id: m6-final
+      phase: 4
+      agent: architect
+      action: "Revisão geral da arquitetura, integração e segurança"
+      requires: m5-qa-implementacao
+      notes: >
+        Revisão geral de conformidade com o PRD de ponta a ponta. Gera docs/FINAL-CONFORMANCE-REVIEW.md.
+        Decide verdict CONFORME ou NAO-CONFORME. Se NAO-CONFORME, atribui correções para Dev e repete auditoria.
+      outputs:
+        - verdict
+        - issues
+      next: complete
+      on_failure: m4_implement_stories
+
+    - workflow_end:
+      id: complete
+      action: project_complete
+      notes: |
+        Bootstrap do projeto finalizado e todas as histórias validadas e entregues conforme o padrão FBR.
+        Status: Pronto para Produção.
