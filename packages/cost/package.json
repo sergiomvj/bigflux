@@ -1,0 +1,15 @@
+{
+  "name": "@bigflux/cost",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "CostTracker, QuotaGuard, degradacao 70/90/100%",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "tsc --build"
+  }
+}

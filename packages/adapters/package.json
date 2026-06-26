@@ -1,0 +1,15 @@
+{
+  "name": "@bigflux/adapters",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TrafficPlatformAdapter, Meta/Google skeleton",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "tsc --build"
+  }
+}

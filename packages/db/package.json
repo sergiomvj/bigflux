@@ -1,0 +1,15 @@
+{
+  "name": "@bigflux/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "modelo tenant, RLS helpers, set_tenant_context",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "tsc --build"
+  }
+}

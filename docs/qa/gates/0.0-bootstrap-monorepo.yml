@@ -1,0 +1,37 @@
+schema: 1
+story: '0.0'
+gate: PASS
+status_reason: 'All 5 ACs verified live (install/lint/typecheck/test exit 0, no-restricted-imports enforced); foundation scope respected with no out-of-scope SDKs leaked.'
+reviewer: 'Quinn'
+updated: '2026-06-23T20:40:00Z'
+
+verification:
+  pnpm_install: 'exit 0 — 13 workspace projects, lockfile up to date'
+  pnpm_lint: 'exit 0 — Tasks: 12 successful, 12 total'
+  pnpm_typecheck: 'exit 0 — Tasks: 12 successful, 12 total'
+  pnpm_test: 'exit 0 — Tasks: 12 successful, 12 total (no-cache --force run; 12 smoke tests passed)'
+  ac5_eslint_probe: 'exit 1 with no-restricted-imports + Art. VI message (rule fires as required)'
+
+quality_checks:
+  code_review: PASS
+  unit_tests: PASS        # smoke sufficient for foundation; ≥90% gate applies from S0.1+
+  acceptance_criteria: PASS  # AC1-AC5 all met
+  no_regressions: PASS    # greenfield foundation, nothing to regress
+  performance: PASS
+  security: PASS          # no hardcoded secrets/credentials; LLM SDKs not installed
+  documentation: PASS
+
+scope_compliance:
+  constitution_art_iv: PASS  # NO Supabase/React/XState/LLM SDK/Storybook/Zod direct deps; vite present only transitively via vitest
+
+top_issues:
+  - id: 'REL-001'
+    severity: low
+    finding: 'Branch protection required status check "ci" (AC3 "blocks merge on failure") is a GitHub repo setting, not committable. Documented in docs/framework/ci.md, pending @devops application.'
+    suggested_action: '@devops applies the required "ci" status check on main (Settings → Branches). Acceptable observation per QA brief — not blocking.'
+  - id: 'REL-002'
+    severity: low
+    finding: 'esbuild postinstall build script left unapproved by pnpm (Ignored build scripts warning). Vitest runs fine via prebuilt binary.'
+    suggested_action: 'Run pnpm approve-builds if CI ever needs esbuild native build. Low risk.'
+
+waiver: { active: false }

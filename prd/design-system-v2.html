@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Design System v2 — Sextou Viral Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* ── superfícies (mantidas da v1) ── */
+  --bg:#0D0D0D;
+  --surface:#171717;
+  --surface2:#1F1F1F;
+  --surface3:#2A2A2A;
+  /* ── bordas ── */
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.15);
+  /* ── texto ── */
+  --text:#F0EDE6;
+  --text2:#A09D97;
+  --text3:#5A5755;
+  /* ── acentos (mantidos) ── */
+  --red:#FF3D57;
+  --redbg:rgba(255,61,87,.12);
+  --yellow:#FFD600;
+  --ybg:rgba(255,214,0,.10);
+  --green:#1FBA7A;
+  --gbg:rgba(31,186,122,.12);
+  --blue:#4A9EFF;
+  --bbg:rgba(74,158,255,.12);
+  --orange:#FF8C00;
+  --obg:rgba(255,140,0,.12);
+  --purple:#9B6DFF;
+  --pbg:rgba(155,109,255,.12);
+  /* ── NOVO v2: gradiente de marca (energia viral) ── */
+  --grad-brand:linear-gradient(135deg,#FF3D57 0%,#FF8C00 100%);
+  --grad-brand-soft:linear-gradient(135deg,rgba(255,61,87,.16),rgba(255,140,0,.16));
+  --grad-celebrate:linear-gradient(135deg,#FF3D57,#9B6DFF 60%,#4A9EFF);
+  /* ── raios (NOVO --r-2xl para cara mais amigável) ── */
+  --r:8px;--r-lg:12px;--r-xl:16px;--r-2xl:22px;
+  /* ── fontes ── título com personalidade (Bricolage), corpo Inter, dados mono */
+  --font:'Inter',system-ui,sans-serif;
+  --display:'Bricolage Grotesque','Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  /* ── sombras (NOVO: elevação 2 p/ momentos de destaque) ── */
+  --sh:0 1px 3px rgba(0,0,0,.4);
+  --sh-2:0 8px 30px rgba(0,0,0,.5);
+  --sh-glow:0 8px 40px rgba(255,61,87,.28);
+  /* ── alvos de toque (NOVO: mobile-first) ── */
+  --tap:48px;       /* mínimo de toque */
+  --tap-cta:54px;   /* CTA principal */
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.55}
+
+/* ════════ HEADER ════════ */
+.header{position:sticky;top:0;z-index:100;background:rgba(13,13,13,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 1.25rem;height:56px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--display);font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--text)}
+.logo span{background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.header-tag{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.04em}
+
+/* ════════ LAYOUT ════════ */
+.wrap{max-width:920px;margin:0 auto;padding:2.25rem 1.1rem 5rem}
+.doc-hero{margin-bottom:2.5rem;padding:1.75rem;border-radius:var(--r-2xl);background:var(--grad-brand-soft);border:1px solid rgba(255,61,87,.2)}
+.doc-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.doc-title{font-family:var(--display);font-size:clamp(32px,8vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.0;margin-bottom:14px}
+.doc-lead{font-size:15px;color:var(--text2);max-width:600px;line-height:1.6}
+.doc-meta{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.meta-pill{font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;background:rgba(0,0,0,.25);border:1px solid var(--border);color:var(--text2)}
+
+.section{margin-bottom:3.25rem}
+.section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:1.25rem;padding-bottom:.7rem;border-bottom:1px solid var(--border)}
+.section-num{font-family:var(--mono);font-size:12px;color:var(--text3)}
+.section-title{font-family:var(--display);font-size:23px;font-weight:700;letter-spacing:-.02em}
+.section-desc{font-size:13px;color:var(--text2);margin-bottom:1.5rem;max-width:640px;line-height:1.65}
+.sub-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin:1.75rem 0 .85rem}
+.sub-label:first-child{margin-top:0}
+.note{font-size:12px;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:var(--r-lg);padding:11px 15px;line-height:1.6;margin-bottom:1.25rem}
+.note b{color:var(--text);font-weight:600}
+
+/* ════════ FONTES — comparativo ════════ */
+.font-compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-bottom:1.5rem}
+.fontc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:18px;position:relative}
+.fontc.pick{border-color:var(--red);background:var(--grad-brand-soft)}
+.fontc-flag{position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;color:#fff;background:var(--red);border-radius:20px;padding:3px 10px}
+.fontc-role{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.fontc-big{font-size:34px;font-weight:800;line-height:1.0;letter-spacing:-.02em;margin-bottom:6px}
+.fontc-sub{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--text2)}
+.fontc-name{font-family:var(--mono);font-size:11px;color:var(--text2)}
+.fontc-why{font-size:12px;color:var(--text3);margin-top:8px;line-height:1.5}
+
+.font-stack{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.font-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px}
+.fc-role{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.fc-preview{font-size:30px;line-height:1.1;margin-bottom:10px;color:var(--text)}
+.fc-var{font-family:var(--mono);font-size:11px;color:var(--text2)}
+
+/* type scale */
+.type-row{padding:1rem 0;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;justify-content:space-between}
+.type-row:last-child{border-bottom:none}
+.type-spec{font-family:var(--mono);font-size:11px;color:var(--text3);text-align:right;line-height:1.6}
+.t-xl{font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.03em;line-height:1.02}
+.t-lg{font-family:var(--display);font-weight:700;font-size:23px;letter-spacing:-.02em}
+.t-md{font-family:var(--display);font-weight:700;font-size:16px}
+.t-body{font-family:var(--font);font-weight:400;font-size:15px}
+.t-strong{font-family:var(--font);font-weight:600;font-size:14px}
+.t-label{font-family:var(--font);font-weight:700;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--text3)}
+.t-mono{font-family:var(--mono);font-weight:400;font-size:13px;color:var(--text2)}
+
+/* ════════ COR ════════ */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.swatch{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.swatch-chip{height:60px;border-bottom:1px solid var(--border)}
+.swatch-meta{padding:9px 11px}
+.swatch-name{font-size:12px;font-weight:600}
+.swatch-var{font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:2px}
+.swatch-hex{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:1px}
+.accent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.accent-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px;display:flex;align-items:center;gap:12px}
+.accent-solid{width:38px;height:38px;border-radius:var(--r);flex-shrink:0}
+.accent-soft{width:38px;height:38px;border-radius:var(--r);flex-shrink:0;border:1px solid var(--border)}
+.accent-name{font-size:13px;font-weight:600}
+.accent-vars{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:3px;line-height:1.5}
+.grad-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.grad-card{border-radius:var(--r-xl);padding:16px;height:96px;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid var(--border)}
+.grad-card .gc-name{font-size:13px;font-weight:700;color:#fff}
+.grad-card .gc-var{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.8);margin-top:2px}
+
+/* tokens */
+.token-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.token-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;text-align:center}
+.token-demo{height:54px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.radius-demo{width:54px;height:54px;background:var(--surface3);border:1px solid var(--border2)}
+.token-name{font-size:12px;font-weight:600}
+.token-val{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:2px}
+
+/* ════════ COMPONENTES ════════ */
+.demo{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.3rem}
+.demo + .demo{margin-top:1rem}
+.demo-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.demo-cap{font-size:11px;color:var(--text3);margin-top:12px;line-height:1.5}
+.demo-cap b{color:var(--green);font-weight:600}
+
+/* botões — NOVO: maiores p/ mobile + variante gradiente */
+button{font-family:var(--font);cursor:pointer;border:1px solid var(--border2);border-radius:var(--r-lg);background:var(--surface2);color:var(--text2);font-size:13px;padding:0 16px;height:var(--tap);display:inline-flex;align-items:center;gap:7px;transition:all .15s}
+button:hover{background:var(--surface3);color:var(--text)}
+button:active{transform:scale(.98)}
+button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn-cta{background:var(--red);color:#fff;border-color:transparent;font-weight:700;font-size:15px;height:var(--tap-cta);border-radius:var(--r-xl);justify-content:center;padding:0 28px}
+.btn-cta:hover{background:#e62e45;color:#fff}
+.btn-grad{background:var(--grad-brand);color:#fff;border-color:transparent;font-weight:700;font-size:16px;height:var(--tap-cta);border-radius:var(--r-xl);justify-content:center;padding:0 30px;box-shadow:var(--sh-glow)}
+.btn-grad:hover{filter:brightness(1.06);color:#fff}
+.btn-cta.green{background:var(--green);color:#0D0D0D}
+.btn-ghost{background:transparent;border-color:transparent;color:var(--text2)}
+.btn-ghost:hover{background:var(--surface2);border-color:var(--border);color:var(--text)}
+.btn-sm{height:34px;font-size:12px;padding:0 12px}
+.btn-block{width:100%}
+
+/* badges / pills / tags (mantidos) */
+.ct-badge{font-family:var(--font);font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:10px}
+.ct-badge.red{background:var(--redbg);color:var(--red)}
+.ct-badge.green{background:var(--gbg);color:var(--green)}
+.ct-badge.blue{background:var(--bbg);color:var(--blue)}
+.ct-badge.purple{background:var(--pbg);color:var(--purple)}
+.cpill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.cpill.cheap{background:var(--gbg);color:var(--green)}
+.cpill.mid{background:var(--ybg);color:var(--yellow)}
+.cpill.pricey{background:var(--redbg);color:var(--red)}
+
+/* ════════ NOVOS COMPONENTES v2 (leigo + mobile) ════════ */
+
+/* stepper amigável (substitui a phase-bar densa) */
+.stepper{display:flex;align-items:center;gap:6px}
+.step{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0}
+.step-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:var(--surface3);color:var(--text3);border:2px solid transparent;transition:all .2s}
+.step.on .step-dot{background:var(--grad-brand);color:#fff;box-shadow:var(--sh-glow)}
+.step.done .step-dot{background:var(--gbg);color:var(--green);border-color:rgba(31,186,122,.4)}
+.step-label{font-size:11px;font-weight:600;color:var(--text3);text-align:center}
+.step.on .step-label{color:var(--text)}
+.step-line{height:2px;flex:0 0 18px;background:var(--surface3);border-radius:2px;align-self:flex-start;margin-top:14px}
+.step.done + .step .step-line,.step.done .step-line{background:var(--green)}
+
+/* empty state didático */
+.empty{text-align:center;padding:2.25rem 1.25rem;border:1.5px dashed var(--border2);border-radius:var(--r-xl);background:var(--surface)}
+.empty-emoji{font-size:38px;margin-bottom:10px}
+.empty-title{font-family:var(--display);font-size:17px;font-weight:700;margin-bottom:6px}
+.empty-text{font-size:13px;color:var(--text2);max-width:340px;margin:0 auto 16px;line-height:1.6}
+
+/* coach tip (onboarding) */
+.coach{display:flex;gap:12px;align-items:flex-start;background:var(--grad-brand-soft);border:1px solid rgba(255,61,87,.25);border-radius:var(--r-xl);padding:14px 16px}
+.coach-icon{font-size:20px;flex-shrink:0;line-height:1.4}
+.coach-body{font-size:13px;color:var(--text);line-height:1.55}
+.coach-body b{color:var(--red)}
+
+/* dropzone de upload (referência de produto/personagem — novo na v2) */
+.dropzone{border:1.5px dashed var(--border2);border-radius:var(--r-xl);padding:1.75rem 1.25rem;text-align:center;background:var(--surface2);transition:all .15s;cursor:pointer}
+.dropzone:hover{border-color:var(--red);background:var(--grad-brand-soft)}
+.dz-emoji{font-size:30px;margin-bottom:8px}
+.dz-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.dz-text{font-size:12px;color:var(--text3)}
+.dz-thumbs{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.dz-thumb{width:54px;height:54px;border-radius:var(--r-lg);background:var(--surface3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:18px}
+
+/* card de template / preset (novo na v2) */
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tpl{border-radius:var(--r-xl);overflow:hidden;border:1.5px solid var(--border);cursor:pointer;transition:all .15s;background:var(--surface)}
+.tpl:hover{border-color:var(--border2)}
+.tpl.on{border-color:var(--red)}
+.tpl-cover{height:84px;display:flex;align-items:center;justify-content:center;font-size:30px}
+.tpl-meta{padding:10px 12px}
+.tpl-name{font-size:13px;font-weight:700}
+.tpl-desc{font-size:11px;color:var(--text3);margin-top:2px;line-height:1.4}
+
+/* preview de legenda (captions — novo na v2) */
+.caption-frame{position:relative;aspect-ratio:9/16;max-width:200px;border-radius:var(--r-xl);overflow:hidden;background:linear-gradient(160deg,#2A2A2A,#0D0D0D);display:flex;align-items:flex-end;justify-content:center;padding:18px 12px;margin:0 auto}
+.caption-frame .cap-badge{position:absolute;top:10px;left:10px;font-size:9px;font-weight:700;background:rgba(0,0,0,.5);color:#fff;border-radius:8px;padding:3px 8px;letter-spacing:.04em}
+.cap-text{font-family:var(--display);font-weight:800;font-size:18px;line-height:1.15;text-align:center;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+.cap-text .hl{background:var(--yellow);color:#0D0D0D;border-radius:5px;padding:0 4px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+/* celebração — momento "vídeo pronto" (novo na v2) */
+.celebrate{position:relative;border-radius:var(--r-2xl);padding:1.75rem;text-align:center;background:var(--grad-celebrate);overflow:hidden;box-shadow:var(--sh-2)}
+.celebrate::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.25),transparent 45%);pointer-events:none}
+.celebrate-emoji{font-size:44px;margin-bottom:8px}
+.celebrate-title{font-family:var(--display);font-size:24px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px}
+.celebrate-sub{font-size:13px;color:rgba(255,255,255,.9);margin-bottom:18px}
+.celebrate .btn-grad{background:#fff;color:#0D0D0D;box-shadow:none}
+.celebrate .btn-grad:hover{filter:none;background:#f0f0f0}
+
+/* progresso amigável */
+.prog-friendly{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-xl);padding:16px}
+.pf-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.pf-msg{font-size:13px;font-weight:600}
+.pf-pct{font-family:var(--mono);font-size:12px;color:var(--text2)}
+.pf-track{height:8px;background:var(--surface3);border-radius:20px;overflow:hidden}
+.pf-fill{height:100%;width:62%;border-radius:20px;background:var(--grad-brand)}
+
+/* erro amigável (substitui "HTTP 429") */
+.friendly-error{display:flex;gap:12px;align-items:flex-start;background:var(--redbg);border:1px solid rgba(255,61,87,.3);border-radius:var(--r-xl);padding:14px 16px}
+.fe-icon{font-size:20px;flex-shrink:0}
+.fe-title{font-size:13px;font-weight:700;color:var(--red);margin-bottom:3px}
+.fe-text{font-size:12px;color:var(--text2);line-height:1.55}
+
+/* toggle (mantido) */
+.toggle-group{display:inline-flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px}
+.tg-btn{font-size:13px;font-weight:600;padding:7px 16px;border-radius:16px;border:none;background:transparent;color:var(--text2);cursor:pointer;height:auto}
+.tg-btn.on{background:var(--red);color:#fff}
+.tg-btn:hover{background:transparent}
+
+/* campos (mantidos, toque maior) */
+.field label{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.field input,.field select{font-family:var(--font);font-size:15px;width:100%;background:var(--surface2);color:var(--text);border:1px solid var(--border2);border-radius:var(--r-lg);padding:0 14px;height:var(--tap);outline:none;transition:border-color .15s,box-shadow .15s}
+.field input:focus,.field select:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--redbg)}
+
+@media(max-width:560px){
+  .type-spec{text-align:left}
+  .type-row{flex-direction:column;gap:6px}
+  .step-label{font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Sextou<span>Viral</span> Studio</div>
+  <div class="header-tag">design system · v2</div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="doc-hero">
+    <div class="doc-eyebrow">Design System · v2 · público leigo & mobile</div>
+    <h1 class="doc-title">Mais marca,<br>menos fricção.</h1>
+    <p class="doc-lead">Evolução do sistema para um app usado por criadores <b>leigos</b>, majoritariamente no <b>celular</b>. Mantém os tokens semânticos da v1 e adiciona personalidade de marca, alvos de toque maiores, componentes que ensinam e um momento de celebração na entrega.</p>
+    <div class="doc-meta">
+      <span class="meta-pill">Título: Bricolage Grotesque</span>
+      <span class="meta-pill">Corpo: Inter</span>
+      <span class="meta-pill">Dados: JetBrains Mono</span>
+      <span class="meta-pill">Tema escuro mantido</span>
+      <span class="meta-pill">+ gradiente de marca</span>
+    </div>
+  </div>
+
+  <!-- 01 TIPOGRAFIA + comparativo -->
+  <section class="section">
+    <div class="section-head"><span class="section-num">01</span><h2 class="section-title">Tipografia &amp; marca</h2></div>
+    <p class="section-desc">Voltamos atrás na padronização total em Inter: para um produto chamado <em>Viral Studio</em>, o título precisa de personalidade. Abaixo, três candidatas de display avaliadas para a v2. Inter permanece no corpo (impecável para leitura) e JetBrains Mono nos dados.</p>
+
+    <div class="sub-label">Comparativo de fonte de título</div>
+    <div class="font-compare">
+      <div class="fontc pick">
+        <span class="fontc-flag">escolhida</span>
+        <div class="fontc-role">Recomendada</div>
+        <div class="fontc-big" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800">Viraliza</div>
+        <div class="fontc-sub" style="font-family:'Bricolage Grotesque',sans-serif">Vídeos que prendem</div>
+        <div class="fontc-name">Bricolage Grotesque</div>
+        <div class="fontc-why">Contemporânea, calorosa e distinta — soa "estúdio criativo" sem ser técnica ou infantil. Variável (peso e óptico).</div>
+      </div>
+      <div class="fontc">
+        <div class="fontc-role">Alternativa A</div>
+        <div class="fontc-big" style="font-family:'Space Grotesk',sans-serif;font-weight:700">Viraliza</div>
+        <div class="fontc-sub" style="font-family:'Space Grotesk',sans-serif">Vídeos que prendem</div>
+        <div class="fontc-name">Space Grotesk</div>
+        <div class="fontc-why">Mais "tech/futurista". Ótima legibilidade, porém menos calorosa para um público leigo.</div>
+      </div>
+      <div class="fontc">
+        <div class="fontc-role">Alternativa B (v1)</div>
+        <div class="fontc-big" style="font-family:'Syne',sans-serif;font-weight:800">Viraliza</div>
+        <div class="fontc-sub" style="font-family:'Syne',sans-serif">Vídeos que prendem</div>
+        <div class="fontc-name">Syne</div>
+        <div class="fontc-why">Bastante expressiva e original (a da v1). Pode cansar em textos maiores; melhor só em destaques curtos.</div>
+      </div>
+    </div>
+    <div class="note"><b>Decisão:</b> adotar <b>Bricolage Grotesque</b> como <code>--display</code>. Caso a marca queira ousar mais, Syne fica como opção de "modo expressivo" para campanhas.</div>
+
+    <div class="sub-label">Papéis de fonte</div>
+    <div class="font-stack">
+      <div class="font-card"><div class="fc-role">Display / Títulos</div><div class="fc-preview" style="font-family:var(--display);font-weight:800">Aa</div><div class="fc-var">--display: Bricolage Grotesque</div></div>
+      <div class="font-card"><div class="fc-role">Corpo / UI</div><div class="fc-preview" style="font-family:var(--font)">Aa</div><div class="fc-var">--font: Inter</div></div>
+      <div class="font-card"><div class="fc-role">Dados / Mono</div><div class="fc-preview" style="font-family:var(--mono)">Aa</div><div class="fc-var">--mono: JetBrains Mono</div></div>
+    </div>
+
+    <div class="sub-label">Escala de tipo</div>
+    <div class="demo">
+      <div class="type-row"><div class="t-xl">Vídeo pronto!</div><div class="type-spec">--display · 800<br>clamp(32–40px)</div></div>
+      <div class="type-row"><div class="t-lg">Título de seção</div><div class="type-spec">--display · 700 · 23px</div></div>
+      <div class="type-row"><div class="t-md">Título de card</div><div class="type-spec">--display · 700 · 16px</div></div>
+      <div class="type-row"><div class="t-body">Texto de corpo da interface</div><div class="type-spec">--font · 400 · 15px</div></div>
+      <div class="type-row"><div class="t-strong">Texto em destaque</div><div class="type-spec">--font · 600 · 14px</div></div>
+      <div class="type-row"><div class="t-label">Label de campo</div><div class="type-spec">--font · 700 · 11px · upper</div></div>
+      <div class="type-row"><div class="t-mono">00:08 · custo $0.12</div><div class="type-spec">--mono · 13px</div></div>
+    </div>
+  </section>
+
+  <!-- 02 COR -->
+  <section class="section">
+    <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Cor</h2></div>
+    <p class="section-desc">Toda a base e os acentos semânticos da v1 são preservados. A novidade é um <b>gradiente de marca</b> (vermelho → laranja) que injeta energia "viral" nos momentos de ação e celebração — usado com parcimônia, só em CTA principal, logo e na tela de entrega.</p>
+
+    <div class="sub-label">Gradientes de marca <span style="color:var(--green)">· novo</span></div>
+    <div class="grad-grid">
+      <div class="grad-card" style="background:var(--grad-brand)"><div class="gc-name">Marca</div><div class="gc-var">--grad-brand · #FF3D57 → #FF8C00</div></div>
+      <div class="grad-card" style="background:var(--grad-celebrate)"><div class="gc-name">Celebração</div><div class="gc-var">--grad-celebrate · red → purple → blue</div></div>
+      <div class="grad-card" style="background:var(--grad-brand-soft);border-color:rgba(255,61,87,.25)"><div class="gc-name" style="color:var(--text)">Suave (fundos)</div><div class="gc-var" style="color:var(--text3)">--grad-brand-soft</div></div>
+    </div>
+
+    <div class="sub-label">Superfícies &amp; texto (mantidos)</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-chip" style="background:#0D0D0D"></div><div class="swatch-meta"><div class="swatch-name">Background</div><div class="swatch-var">--bg</div><div class="swatch-hex">#0D0D0D</div></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#171717"></div><div class="swatch-meta"><div class="swatch-name">Surface</div><div class="swatch-var">--surface</div><div class="swatch-hex">#171717</div></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#1F1F1F"></div><div class="swatch-meta"><div class="swatch-name">Surface 2</div><div class="swatch-var">--surface2</div><div class="swatch-hex">#1F1F1F</div></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#F0EDE6"></div><div class="swatch-meta"><div class="swatch-name">Texto</div><div class="swatch-var">--text</div><div class="swatch-hex">#F0EDE6</div></div></div>
+    </div>
+
+    <div class="sub-label">Acentos semânticos (mantidos)</div>
+    <div class="accent-grid">
+      <div class="accent-row"><div class="accent-solid" style="background:#FF3D57"></div><div class="accent-soft" style="background:rgba(255,61,87,.12)"></div><div><div class="accent-name" style="color:#FF3D57">Vermelho · ação</div><div class="accent-vars">--red · --redbg</div></div></div>
+      <div class="accent-row"><div class="accent-solid" style="background:#1FBA7A"></div><div class="accent-soft" style="background:rgba(31,186,122,.12)"></div><div><div class="accent-name" style="color:#1FBA7A">Verde · sucesso</div><div class="accent-vars">--green · --gbg</div></div></div>
+      <div class="accent-row"><div class="accent-solid" style="background:#FFD600"></div><div class="accent-soft" style="background:rgba(255,214,0,.10)"></div><div><div class="accent-name" style="color:#FFD600">Amarelo · atenção</div><div class="accent-vars">--yellow · --ybg</div></div></div>
+      <div class="accent-row"><div class="accent-solid" style="background:#4A9EFF"></div><div class="accent-soft" style="background:rgba(74,158,255,.12)"></div><div><div class="accent-name" style="color:#4A9EFF">Azul · info</div><div class="accent-vars">--blue · --bbg</div></div></div>
+      <div class="accent-row"><div class="accent-solid" style="background:#FF8C00"></div><div class="accent-soft" style="background:rgba(255,140,0,.12)"></div><div><div class="accent-name" style="color:#FF8C00">Laranja · mídia</div><div class="accent-vars">--orange · --obg</div></div></div>
+      <div class="accent-row"><div class="accent-solid" style="background:#9B6DFF"></div><div class="accent-soft" style="background:rgba(155,109,255,.12)"></div><div><div class="accent-name" style="color:#9B6DFF">Roxo · voz</div><div class="accent-vars">--purple · --pbg</div></div></div>
+    </div>
+  </section>
+
+  <!-- 03 RAIO / SOMBRA / TOQUE -->
+  <section class="section">
+    <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Raio, sombra &amp; toque</h2></div>
+    <p class="section-desc">Cantos um pouco mais arredondados (novo <code>--r-2xl</code>) deixam a interface mais amigável. Alvos de toque ganham mínimos explícitos para uso no celular, e há uma sombra de brilho para o CTA principal.</p>
+
+    <div class="sub-label">Raios</div>
+    <div class="token-grid">
+      <div class="token-box"><div class="token-demo"><div class="radius-demo" style="border-radius:8px"></div></div><div class="token-name">--r</div><div class="token-val">8px</div></div>
+      <div class="token-box"><div class="token-demo"><div class="radius-demo" style="border-radius:12px"></div></div><div class="token-name">--r-lg</div><div class="token-val">12px</div></div>
+      <div class="token-box"><div class="token-demo"><div class="radius-demo" style="border-radius:16px"></div></div><div class="token-name">--r-xl</div><div class="token-val">16px</div></div>
+      <div class="token-box"><div class="token-demo"><div class="radius-demo" style="border-radius:22px"></div></div><div class="token-name">--r-2xl <span style="color:var(--green)">novo</span></div><div class="token-val">22px</div></div>
+    </div>
+
+    <div class="sub-label">Sombras &amp; toque</div>
+    <div class="token-grid">
+      <div class="token-box"><div class="token-demo"><div class="radius-demo" style="border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div></div><div class="token-name">--sh</div><div class="token-val">elevação base</div></div>
+      <div class="token-box"><div class="token-demo"><div class="radius-demo" style="border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.5)"></div></div><div class="token-name">--sh-2 <span style="color:var(--green)">novo</span></div><div class="token-val">destaque</div></div>
+      <div class="token-box"><div class="token-demo"><div class="radius-demo" style="border-radius:12px;box-shadow:0 8px 40px rgba(255,61,87,.28)"></div></div><div class="token-name">--sh-glow <span style="color:var(--green)">novo</span></div><div class="token-val">CTA</div></div>
+      <div class="token-box"><div class="token-demo"><div style="display:flex;flex-direction:column;gap:4px"><div style="width:54px;height:20px;background:var(--surface3);border-radius:6px"></div><div style="font-size:9px;color:var(--text3);font-family:var(--mono)">48 / 54</div></div></div><div class="token-name">--tap <span style="color:var(--green)">novo</span></div><div class="token-val">48px / cta 54px</div></div>
+    </div>
+  </section>
+
+  <!-- 04 COMPONENTES NOVOS -->
+  <section class="section">
+    <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Componentes novos para leigos</h2></div>
+    <p class="section-desc">Peças criadas na v2 para reduzir intimidação, ensinar pelo caminho e dar deleite — pensadas para os fluxos novos (upload de referência, legendas, templates, celebração da entrega).</p>
+
+    <div class="sub-label">CTA principal &amp; gradiente</div>
+    <div class="demo">
+      <div class="demo-bar">
+        <button class="btn-grad">✨ Criar meu vídeo</button>
+        <button class="btn-cta">Continuar →</button>
+        <button class="btn-cta green">Aprovar ✓</button>
+        <button class="btn-ghost">Voltar</button>
+      </div>
+      <div class="demo-cap"><b>Novo:</b> botão gradiente reservado para a ação‑chave de cada fase, com sombra de brilho e altura de toque de 54px.</div>
+    </div>
+
+    <div class="sub-label">Stepper amigável (substitui a barra de fases densa)</div>
+    <div class="demo">
+      <div class="stepper">
+        <div class="step done"><div class="step-dot">✓</div><div class="step-label">Ideia</div></div>
+        <div class="step-line"></div>
+        <div class="step on"><div class="step-dot">2</div><div class="step-label">Roteiro</div></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-dot">3</div><div class="step-label">Vozes</div></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-dot">4</div><div class="step-label">Vídeo</div></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Coach tip (ensina pelo caminho)</div>
+    <div class="demo">
+      <div class="coach"><div class="coach-icon">💡</div><div class="coach-body"><b>Dica:</b> capriche na primeira frase do roteiro — os <b>2 primeiros segundos</b> decidem se o vídeo prende. A IA já tenta criar um gancho, mas você pode ajustar.</div></div>
+    </div>
+
+    <div class="sub-label">Dropzone de referência <span style="color:var(--green)">· novo (consistência)</span></div>
+    <div class="demo">
+      <div class="dropzone">
+        <div class="dz-emoji">🖼️</div>
+        <div class="dz-title">Adicione uma foto do produto ou do personagem</div>
+        <div class="dz-text">Usamos como referência para manter o mesmo visual em todas as cenas</div>
+        <div class="dz-thumbs"><div class="dz-thumb">📦</div><div class="dz-thumb">🙂</div><div class="dz-thumb" style="border-style:dashed">＋</div></div>
+      </div>
+      <div class="demo-cap"><b>Resolve</b> o maior problema de qualidade da v1: rosto/produto consistente entre cenas via image‑to‑video.</div>
+    </div>
+
+    <div class="sub-label">Templates de estilo <span style="color:var(--green)">· novo</span></div>
+    <div class="demo">
+      <div class="tpl-grid">
+        <div class="tpl on"><div class="tpl-cover" style="background:var(--grad-brand-soft)">🔥</div><div class="tpl-meta"><div class="tpl-name">UGC Hype</div><div class="tpl-desc">Rápido, energético</div></div></div>
+        <div class="tpl"><div class="tpl-cover" style="background:rgba(74,158,255,.12)">🧊</div><div class="tpl-meta"><div class="tpl-name">Clean Demo</div><div class="tpl-desc">Produto em foco</div></div></div>
+        <div class="tpl"><div class="tpl-cover" style="background:rgba(31,186,122,.12)">💬</div><div class="tpl-meta"><div class="tpl-name">Depoimento</div><div class="tpl-desc">Prova social</div></div></div>
+      </div>
+      <div class="demo-cap">Menos decisões para o leigo: o template já define proporção, ritmo e tom do roteiro.</div>
+    </div>
+
+    <div class="sub-label">Preview de legenda <span style="color:var(--green)">· novo</span></div>
+    <div class="demo" style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+      <div class="caption-frame">
+        <span class="cap-badge">9:16 · legenda</span>
+        <div class="cap-text">Você <span class="hl">precisa</span> ver isso</div>
+      </div>
+      <div style="flex:1;min-width:200px">
+        <div class="demo-cap" style="margin-top:0"><b>Novo:</b> legendas queimadas e proporção <b>9:16 por padrão</b> — a maioria assiste sem som. Palavra‑chave destacada em amarelo.</div>
+      </div>
+    </div>
+
+    <div class="sub-label">Progresso &amp; erros amigáveis</div>
+    <div class="demo">
+      <div class="prog-friendly">
+        <div class="pf-top"><span class="pf-msg">Gerando suas cenas… 🎬</span><span class="pf-pct">62%</span></div>
+        <div class="pf-track"><div class="pf-fill"></div></div>
+      </div>
+      <div style="margin-top:12px"></div>
+      <div class="friendly-error"><div class="fe-icon">😅</div><div><div class="fe-title">Demanda alta no momento</div><div class="fe-text">O servidor de vídeo está cheio. Espere alguns segundos e toque em "Tentar de novo" — você não será cobrado por tentativas que falharam.</div></div></div>
+      <div class="demo-cap"><b>Novo:</b> nada de "HTTP 429" na cara do usuário — mensagens explicam o que houve e o que fazer.</div>
+    </div>
+
+    <div class="sub-label">Momento de celebração <span style="color:var(--green)">· novo</span></div>
+    <div class="demo" style="background:transparent;border:none;padding:0">
+      <div class="celebrate">
+        <div class="celebrate-emoji">🎉</div>
+        <div class="celebrate-title">Seu vídeo está pronto!</div>
+        <div class="celebrate-sub">30 segundos · 9:16 · com legendas e narração</div>
+        <button class="btn-grad">⬇ Baixar vídeo</button>
+      </div>
+      <div class="demo-cap">O clímax do app merece comemoração — gradiente, emoji e foco total no download.</div>
+    </div>
+  </section>
+
+  <!-- 05 PRINCÍPIOS -->
+  <section class="section">
+    <div class="section-head"><span class="section-num">05</span><h2 class="section-title">Princípios de UX da v2</h2></div>
+    <div class="demo">
+      <div class="coach" style="margin-bottom:10px"><div class="coach-icon">📱</div><div class="coach-body"><b>Mobile‑first.</b> O uso e o resultado são verticais. Toque ≥ 48px, uma decisão por tela, CTA sempre alcançável com o polegar.</div></div>
+      <div class="coach" style="margin-bottom:10px"><div class="coach-icon">🧭</div><div class="coach-body"><b>Ensina pelo caminho.</b> Coach tips, estados vazios e microcopy em linguagem do usuário — nunca termos de sistema.</div></div>
+      <div class="coach" style="margin-bottom:10px"><div class="coach-icon">🎈</div><div class="coach-body"><b>Gaste a ousadia em um lugar.</b> Gradiente de marca só em CTA, logo e entrega. O resto fica quieto e disciplinado.</div></div>
+      <div class="coach"><div class="coach-icon">🛟</div><div class="coach-body"><b>Falha é direção.</b> Todo erro diz o que houve e o próximo passo, na voz do produto.</div></div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

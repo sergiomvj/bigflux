@@ -1,0 +1,15 @@
+{
+  "name": "@bigflux/agents",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AgentRunner (sync/job/stream), envelope, catalogo erro",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "tsc --build"
+  }
+}
