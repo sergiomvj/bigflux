@@ -8,7 +8,7 @@ describe("@bigflux/db framework", () => {
     expect(info.story).toBe("S0.1");
   });
 
-  it("manages tenant context locally", async () => {
+  it("manages tenant context locally and triggers RPC", async () => {
     const ctx = new DatabaseContext('https://mock-project.supabase.co', 'mock-anon-key');
     expect(ctx.getCurrentTenantId()).toBeNull();
 
@@ -24,5 +24,23 @@ describe("@bigflux/db framework", () => {
     await ctx.setTenantContext(null);
     expect(ctx.getCurrentTenantId()).toBeNull();
     expect(mockRpc).toHaveBeenCalledWith('clear_tenant_context');
+  });
+
+  it("handles audit log recording for super admins", async () => {
+    const ctx = new DatabaseContext('https://mock-project.supabase.co', 'mock-anon-key');
+    
+    // Mock builder syntax of supabase-js
+    const mockInsert = vi.fn().mockResolvedValue({ data: null, error: null });
+    const mockFrom = vi.fn().mockReturnValue({ insert: mockInsert });
+    ctx.getClient().from = mockFrom;
+
+    await ctx.logSuperAdminAction('user-1', 'view_dashboard', 'tenant-b', { ip: '127.0.0.1' });
+    expect(mockFrom).toHaveBeenCalledWith('audit_logs');
+    expect(mockInsert).toHaveBeenCalledWith({
+      user_id: 'user-1',
+      action: 'view_dashboard',
+      target_tenant_id: 'tenant-b',
+      details: { ip: '127.0.0.1' }
+    });
   });
 });

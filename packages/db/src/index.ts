@@ -37,10 +37,6 @@ export class DatabaseContext {
     
     // Define a variável de sessão (GUC) app.current_tenant_id na conexão Supabase/Postgres
     if (tenantId) {
-      // Usamos a chamada SQL RPC ou direta para set_config. 
-      // Em clientes reais Supabase, para persistir na conexão do pool, podemos rodar uma RPC
-      // ou anexar cabeçalhos / claims JWT. Para fins deste helper, simulamos localmente e
-      // chamamos o comando de banco correspondente na sessão ativa.
       await this.client.rpc('set_tenant_context', { tenant_id: tenantId });
     } else {
       await this.client.rpc('clear_tenant_context');
@@ -52,5 +48,23 @@ export class DatabaseContext {
    */
   getCurrentTenantId(): string | null {
     return this.currentTenantId;
+  }
+
+  /**
+   * Helper para auditoria de ações do Super Admin
+   */
+  async logSuperAdminAction(userId: string, action: string, targetTenantId: string, details?: Record<string, any>): Promise<void> {
+    const { error } = await this.client
+      .from('audit_logs')
+      .insert({
+        user_id: userId,
+        action,
+        target_tenant_id: targetTenantId,
+        details
+      });
+    
+    if (error) {
+      throw new Error(`Failed to log super admin action: ${error.message}`);
+    }
   }
 }
